@@ -1,0 +1,5 @@
+document.querySelectorAll('.prods .prod').forEach(card=>{
+ const link=card.querySelector('a'); const button=card.querySelector('.carrinho'); const nome=card.querySelector('.nome-prod')?.textContent.trim()||'Moletom DRIPLAB'; const precoTexto=card.querySelector('.preco')?.textContent||'0'; const preco=Number(precoTexto.replace(/[^\d,]/g,'').replace(',','.')); const imagem=card.querySelector('.imagem-prod img')?.getAttribute('src')||'../img/moletom-outlaw-frente.jpg'; const slug=(link?.getAttribute('href')||'').split('produto=')[1]||'outlaw';
+ if(link) link.href=`../html/produto.html?produto=${slug}`;
+ if(button) button.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();let itens=[];try{itens=JSON.parse(localStorage.getItem('carrinho')||'[]')}catch{};const existente=itens.find(x=>x.slug===slug&&!x.tamanho);if(existente) existente.quantidade=Number(existente.quantidade||1)+1;else itens.push({slug,nome,preco,imagem,tamanho:null,quantidade:1});localStorage.setItem('carrinho',JSON.stringify(itens));alert('Produto adicionado ao carrinho!');});
+});

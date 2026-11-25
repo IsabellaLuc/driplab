@@ -1,0 +1,100 @@
+<!DOCTYPE html> 
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRIPLAB — Minha Conta</title>
+    <link rel="stylesheet" href="../css/style.css">
+</head>
+<body>
+    <section class="linhatopo">
+    <div class="faixa-avisos">
+        <div class="lista-avisos">
+            <p>Parcele em até 6x sem juros!</p>
+            <p>Frete grátis em compras acima de R$ 299!</p>
+            <p>Confira nossas novidades!</p>
+            <p>Até 30% OFF em produtos selecionados!</p>
+        </div>
+    </div>
+</section>
+    <header class="faixasuperior">
+        <div class="pesquisa">
+            <form id="form-pesquisa">
+                <button type="submit">
+                    <img src="../img/lupa.png" alt="Lupa de pesquisa">
+                </button>
+                <input type="text" id="campo-pesquisa" placeholder="Faça uma pesquisa..." class="textopesq">
+            </form>
+        </div>
+
+        <div class="logo">
+            <a href="../html/home.html">
+                <img src="../img/LOGO_BRANCA.png"
+                    alt="Logo DRIPLAB"
+                    class="logo-normal">
+
+                <img src="../img/LOGO_VERMELHA.png"
+                    alt=""
+                    class="logo-hover">
+            </a>
+        </div>
+
+
+        <div id="usuario-logado" class="fazercad loginfeito">
+            <a href="../html/conta.html" class="loginbut" aria-label="Minha conta"><img src="../img/cadastro_usuario.png" alt="Minha conta"></a>
+            <a href="../html/carrinho.html" class="loginbut"><img src="../img/carrinho.png" alt="Veja seu carrinho"></a>
+            <button id="btn-sair" class="loginbut"><img src="../img/sair.png" alt="Botão de sair do login"></button>
+        </div>
+    </header>
+    <nav class="menu">
+        <div class="categoria">
+            <a href="#" class="seta"><p>Categorias </p></a>
+
+            <div class="submenu">
+                <a href="../html/tenis.html" class="naoutil"><p>Tênis</p></a>
+                <a href="../html/moletom.html" class="util"><p>Moletom</p></a>
+                <a href="../html/camisa.html" class="naoutil"><p>Camisetas</p></a>
+            </div>
+ 
+        </div>
+
+        <a href="#maisvendidos" class="options"><p>Mais vendidos</p></a>
+        <a href="#promocoes" class="options"><p>Promoções</p></a>
+        <a href="../html/sobre.html" class="options"><p>Sobre nós</p></a>
+
+        <a href="https://yreally.itch.io/driplabpisante" class="pisante-link">
+            <img src="../img/pisante1.png" alt="Acesse nosso jogo!" class="pisante">
+            <img src="../img/pisante2.png" alt="Acesse nosso jogo!" class="pisantehover">
+        </a>
+    </nav>
+
+    <main class="conta-area">
+        <section class="conta-card">
+            <img src="../img/cadastro_usuario.png" alt="Ícone de usuário" class="conta-avatar">
+            <h1>Minha conta</h1>
+            <p id="conta-status">Carregando informações...</p>
+
+            <dl>
+                <dt>Nome</dt>
+                <dd id="conta-nome">—</dd>
+
+                <dt>Nome de usuário</dt>
+                <dd id="conta-username">—</dd>
+
+                <dt>E-mail</dt>
+                <dd id="conta-email">—</dd>
+
+                <dt>Telefone</dt>
+                <dd id="conta-telefone">—</dd>
+            </dl>
+
+            <button id="conta-sair" type="button">Sair da conta</button>
+            <button id="conta-excluir" type="button">
+                Excluir minha conta
+            </button>
+        </section>
+    </main>
+
+    <script src="../js/conta.js" defer></script>
+</body>
+</html>
