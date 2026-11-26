@@ -1,0 +1,548 @@
+/* O administrador reutiliza style.css para manter as fontes, cores,
+   cabeçalho, navegação e rodapé originais do DRIPLAB. */
+
+/* CABEÇALHO DO PAINEL */
+
+.adm-faixasuperior {
+    align-items: center;
+}
+
+.logo {
+    margin: 0 0px 145px 7.5%;
+    position: relative;
+}
+
+
+.adm-identificacao {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    color: #FFF;
+    font-family: 'madetommyrg', Arial, sans-serif;
+    text-align: center;
+}
+
+.adm-identificacao strong {
+    font-family: 'CoolveticaRg', Arial, sans-serif;
+    font-size: 22px;
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+.adm-legenda,
+.adm-sobretitulo {
+    color: #E51A22;
+    font-family: 'madetommymd', Arial, sans-serif;
+    font-size: 11px;
+    letter-spacing: 2px;
+}
+
+.adm-acoes-topo {
+    position: absolute;
+    top: 43px;
+    right: 7.5%;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.adm-voltar,
+.adm-sair {
+    min-height: 48px;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #FFF;
+    border-radius: 15px;
+    background-color: #2E0E0E;
+    color: #FFF;
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 14px;
+    cursor: pointer;
+    transition: .3s ease;
+}
+
+.adm-voltar:hover,
+.adm-sair:hover {
+    background-color: #E51A22;
+    transform: scale(1.05);
+}
+
+.adm-sair {
+    width: auto !important;
+    height: 48px !important;
+    padding: 0 24px !important;
+    border-radius: 15px !important;
+    font-family: 'madetommymd', Arial, sans-serif;
+}
+
+.adm-menu {
+    gap: 12px;
+    min-height: 48px;
+}
+
+.adm-menu a {
+    font-size: 14px;
+}
+
+.adm-menu a:hover {
+    color: #E51A22;
+}
+
+/* ÁREA PRINCIPAL */
+
+.adm-conteudo {
+    width: min(1120px, 88%);
+    margin: 65px auto 0;
+    color: #FFF;
+}
+
+.adm-apresentacao {
+    margin-bottom: 35px;
+    padding: 10px 0 25px;
+    border-bottom: 1px solid rgba(255, 255, 255, .35);
+}
+
+.adm-apresentacao h1 {
+    margin: 9px 0 10px;
+    color: #FFF;
+    font-family: 'CoolveticaRg', Arial, sans-serif;
+    font-size: clamp(30px, 4vw, 46px);
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+.adm-apresentacao > p:last-child {
+    color: #c9baba;
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+}
+
+.adm-bloco {
+    margin: 28px 0;
+    padding: 30px 34px;
+    border: 1.5px solid #FFF;
+    border-radius: 18px;
+    background: rgba(20, 3, 3, .72);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, .25);
+    scroll-margin-top: 25px;
+}
+
+.adm-titulo-bloco {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 28px;
+}
+
+.adm-titulo-bloco h2 {
+    margin-top: 7px;
+    color: #FFF;
+    font-family: 'CoolveticaRg', Arial, sans-serif;
+    font-size: 27px;
+    font-weight: normal;
+    letter-spacing: 1px;
+}
+
+/* FORMULÁRIO */
+
+.adm-grade-form {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 22px 28px;
+}
+
+.adm-formulario label,
+.adm-filtro label {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    color: #FFF;
+    font-family: 'madetommymd', Arial, sans-serif;
+    font-size: 14px;
+}
+
+.adm-formulario input:not([type="checkbox"]),
+.adm-formulario select,
+.adm-formulario textarea,
+.adm-filtro input {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 18px;
+    border: 1px solid #FFF;
+    border-radius: 25px;
+    outline: none;
+    background: rgba(229, 26, 34, .10);
+    color: #FFF;
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 14px;
+    transition: .25s ease;
+}
+
+.adm-formulario textarea {
+    min-height: 110px;
+    border-radius: 18px;
+    resize: vertical;
+}
+
+.adm-formulario select option {
+    background: #2E0E0E;
+    color: #FFF;
+}
+
+.adm-formulario input::placeholder,
+.adm-formulario textarea::placeholder,
+.adm-filtro input::placeholder {
+    color: rgba(255, 255, 255, .65);
+}
+
+.adm-formulario input:focus,
+.adm-formulario select:focus,
+.adm-formulario textarea:focus,
+.adm-filtro input:focus {
+    background: #FFF;
+    border: 2px solid #E51A22;
+    color: #2E0E0E;
+}
+
+.adm-formulario input:focus::placeholder,
+.adm-formulario textarea:focus::placeholder,
+.adm-filtro input:focus::placeholder {
+    color: #8b5555;
+}
+
+.adm-campo-largo {
+    grid-column: 1 / -1;
+}
+
+.adm-formulario small {
+    color: #a99b9b;
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 11px;
+    line-height: 1.5;
+}
+
+.adm-ativo {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: center;
+    gap: 10px !important;
+    margin-top: 22px;
+    color: #FFF;
+    font-family: 'madetommylight', Arial, sans-serif !important;
+}
+
+.adm-ativo input {
+    accent-color: #E51A22;
+    width: 17px;
+    height: 17px;
+}
+
+.adm-acoes-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+}
+
+.adm-botao {
+    min-height: 45px;
+    padding: 0 24px;
+    border: 1px solid #FFF;
+    border-radius: 25px;
+    color: #FFF;
+    font-family: 'madetommymd', Arial, sans-serif;
+    font-size: 13px;
+    letter-spacing: .4px;
+    cursor: pointer;
+    transition: .25s ease;
+}
+
+.adm-botao-principal {
+    background: #E51A22;
+}
+
+.adm-botao-secundario {
+    background: #2E0E0E;
+}
+
+.adm-botao:hover {
+    border: 2px solid #FFF;
+    transform: scale(1.04);
+}
+
+.adm-botao:disabled {
+    opacity: .55;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* LISTA E TABELA */
+
+.adm-titulo-lista {
+    margin-bottom: 22px;
+}
+
+.adm-filtro {
+    width: min(430px, 100%);
+    margin-bottom: 22px;
+}
+
+.adm-tabela-scroll {
+    width: 100%;
+    overflow-x: auto;
+    border: 1px solid rgba(255, 255, 255, .65);
+    border-radius: 12px;
+}
+
+.adm-tabela {
+    width: 100%;
+    min-width: 760px;
+    border-collapse: collapse;
+    color: #FFF;
+    background: rgba(0, 0, 0, .3);
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 13px;
+}
+
+.adm-tabela th {
+    padding: 17px 14px;
+    background: #2E0E0E;
+    color: #FFF;
+    border-bottom: 1px solid #E51A22;
+    text-align: left;
+    font-family: 'madetommymd', Arial, sans-serif;
+    font-weight: normal;
+    white-space: nowrap;
+}
+
+.adm-tabela td {
+    padding: 13px 14px;
+    border-bottom: 1px solid rgba(255, 255, 255, .15);
+    vertical-align: middle;
+}
+
+.adm-tabela tbody tr:hover {
+    background: rgba(229, 26, 34, .09);
+}
+
+.adm-tabela tbody tr:last-child td {
+    border-bottom: none;
+}
+
+.adm-tabela .adm-vazio,
+.adm-tabela .vazio {
+    padding: 28px;
+    color: #bbaaaa;
+    text-align: center;
+}
+
+.produto-celula {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 180px;
+}
+
+.produto-celula img {
+    width: 48px;
+    height: 62px;
+    object-fit: cover;
+    border: 1px solid #FFF;
+    border-radius: 8px;
+    background: #FFF;
+}
+
+.status {
+    display: inline-block;
+    padding: 5px 11px;
+    border: 1px solid currentColor;
+    border-radius: 20px;
+    font-size: 11px;
+}
+
+.status.ativo {
+    color: #8ed6a0;
+}
+
+.status.inativo {
+    color: #ff8585;
+}
+
+.acoes-tabela {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.acoes-tabela button {
+    padding: 7px 12px;
+    border: 1px solid #FFF;
+    border-radius: 18px;
+    color: #FFF;
+    font-family: 'madetommymd', Arial, sans-serif;
+    font-size: 11px;
+    cursor: pointer;
+    transition: .2s;
+}
+
+.btn-editar {
+    background: #2E0E0E;
+}
+
+.btn-excluir {
+    background: #E51A22;
+}
+
+.acoes-tabela button:hover {
+    border-width: 2px;
+    transform: scale(1.04);
+}
+
+.acoes-tabela button:disabled {
+    opacity: .45;
+    cursor: not-allowed;
+    transform: none;
+}
+
+/* MENSAGENS */
+
+.adm-mensagem,
+.mensagem {
+    display: none;
+    margin: 0 0 20px;
+    padding: 13px 18px;
+    border: 1px solid #FFF;
+    border-radius: 12px;
+    color: #FFF;
+    font-family: 'madetommylight', Arial, sans-serif;
+    font-size: 13px;
+}
+
+.adm-mensagem.visivel,
+.mensagem.visivel {
+    display: block;
+}
+
+.adm-mensagem.sucesso,
+.mensagem.sucesso {
+    border-color: #8ed6a0;
+    background: rgba(60, 130, 75, .12);
+}
+
+.adm-mensagem.erro,
+.mensagem.erro {
+    border-color: #E51A22;
+    background: rgba(229, 26, 34, .13);
+}
+
+.adm-rodape {
+    margin-top: 100px;
+}
+
+@media (max-width: 900px) {
+    .adm-acoes-topo {
+        right: 4%;
+    }
+
+    .adm-identificacao {
+        left: 45%;
+    }
+
+    .adm-conteudo {
+        width: 92%;
+    }
+
+    .adm-bloco {
+        padding: 25px 22px;
+    }
+}
+
+@media (max-width: 650px) {
+    .adm-faixasuperior {
+        height: 170px;
+    }
+
+    .adm-faixasuperior .logo a {
+        left: 50%;
+        top: 0;
+        width: 145px;
+        height: 75px;
+        margin-top: 8px;
+    }
+
+    .adm-identificacao {
+        top: 91px;
+        left: 50%;
+        width: 90%;
+    }
+
+    .adm-identificacao strong {
+        font-size: 18px;
+    }
+
+    .adm-acoes-topo {
+        top: 115px;
+        right: 4%;
+    }
+
+    .adm-voltar,
+    .adm-sair {
+        min-height: 36px;
+        padding: 0 12px;
+        font-size: 11px;
+    }
+
+    .adm-sair {
+        height: 36px !important;
+    }
+
+    .adm-menu {
+        flex-wrap: wrap;
+        gap: 5px;
+        padding: 12px 5px;
+    }
+
+    .adm-menu a {
+        margin: 4px 8px;
+        font-size: 12px;
+    }
+
+    .adm-conteudo {
+        margin-top: 38px;
+    }
+
+    .adm-bloco {
+        padding: 22px 16px;
+    }
+
+    .adm-titulo-bloco {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .adm-grade-form {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .adm-campo-largo {
+        grid-column: auto;
+    }
+
+    .adm-botao {
+        width: 100%;
+    }
+
+    .adm-acoes-form {
+        flex-direction: column;
+    }
+}

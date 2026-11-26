@@ -38,7 +38,10 @@ async function carregarProdutos() {
             link.href = `../html/produto.html?id=${encodeURIComponent(produto.id)}`;
 
             const imagem = document.createElement('img');
-            imagem.src = produto.imagem || '../img/produto1.png';
+            const caminho = produto.imagens?.frente || produto.imagem || `produto${produto.id}.png`;
+            imagem.src = /^(https?:|data:|blob:|\/)/i.test(String(caminho))
+                ? String(caminho).replace(/^\/img\//, '/img/')
+                : `/img/${String(caminho).replace(/^\.\.\/img\//, '').replace(/^img\//, '')}`;
             imagem.alt = produto.nome || 'Produto DRIPLAB';
             imagem.loading = 'lazy';
             imagem.onerror = () => {

@@ -1,34 +1,154 @@
 const parametrosProduto = new URLSearchParams(location.search);
 const idProduto = parametrosProduto.get('id');
-const slugProduto = parametrosProduto.get('produto') || 'outlaw';
-const catalogoMoletons = {
-    outlaw: { nome: 'Moletom Outlaw', preco: 99.90, descricao: 'Moletom preto oversized com arte gráfica em tons de prata, tecido macio e acabamento canelado.' },
-    ignition: { nome: 'Moletom Ignition', preco: 78.90, descricao: 'Moletom grafite com estampa abstrata em laranja, capuz estruturado e bolso frontal.' },
-    aftershock: { nome: 'Moletom Aftershock', preco: 85.90, descricao: 'Moletom azul-marinho com grafismo elétrico azul e modelagem urbana confortável.' },
-    crimson: { nome: 'Moletom Crimson', preco: 109.90, descricao: 'Moletom vinho com estampa tonal, visual marcante e interior aconchegante.' }
-};
-function lerCarrinho() { try { const v=JSON.parse(localStorage.getItem('carrinho')||'[]'); return Array.isArray(v)?v:[]; } catch { return []; } }
-function configurarGaleria(slug) {
-    const base=`../img/moletom-${slug}-`;
-    const miniaturas=document.querySelector('.miniaturas');
-    const principal=document.querySelector('.imagem-principal img');
-    if(!miniaturas||!principal) return;
-    const imagens=[['frente','Vista frontal'],['lateral','Vista lateral'],['detalhe','Detalhe da estampa e do tecido']];
+
+function caminhoImagem(caminho, alternativa = '') {
+    let valor = String(caminho || alternativa || '').trim();
+    if (!valor) return '';
+    if (/^(https?:|data:|blob:)/i.test(valor)) return valor;
+    valor = valor.replace(/\\/g, '/');
+    if (valor.startsWith('../img/')) return `/img/${valor.slice(7)}`;
+    if (valor.startsWith('img/')) return `/${valor}`;
+    if (valor.startsWith('/')) return valor;
+    return `/img/${valor.replace(/^\.\//, '')}`;
+}
+
+function lerCarrinho() {
+    try {
+        const itens = JSON.parse(localStorage.getItem('carrinho') || '[]');
+        return Array.isArray(itens) ? itens : [];
+    } catch {
+        return [];
+    }
+}
+
+function configurarGaleria(produto) {
+    const miniaturas = document.querySelector('.miniaturas');
+    const principal = document.querySelector('.imagem-principal img');
+    if (!miniaturas || !principal) return;
+
+    const imagens = produto.imagens && typeof produto.imagens === 'object'
+        ? produto.imagens
+        : {};
+    const idNumerico = Number(produto.id);
+    const imagemPrincipal = caminhoImagem(
+        imagens.frente || produto.imagem,
+        `produto${produto.id}.png`
+    );
+    const galeria = [{ caminho: imagemPrincipal, descricao: 'Imagem principal do produto' }];
+
+    if (Number.isInteger(idNumerico) && idNumerico >= 1 && idNumerico <= 4) {
+        for (let indice = 1; indice <= 3; indice++) {
+            galeria.push({
+                caminho: `/img/produto${idNumerico}-detalhe-${indice}.jpg`,
+                descricao: `Detalhe ${indice} do produto`
+            });
+        }
+    } else {
+        ['lateral', 'costas', 'detalhe'].forEach(chave => {
+            if (imagens[chave]) {
+                galeria.push({
+                    caminho: caminhoImagem(imagens[chave]),
+                    descricao: chave === 'detalhe' ? 'Detalhe do produto' :
+                        chave === 'lateral' ? 'Vista lateral do produto' : 'Vista das costas do produto'
+                });
+            }
+        });
+    }
+
     miniaturas.replaceChildren();
-    imagens.forEach(([tipo,alt],i)=>{
-        const b=document.createElement('button'); b.type='button'; b.className='miniatura'+(i===0?' selecionada':''); b.setAttribute('aria-label',alt);
-        const img=document.createElement('img'); img.src=base+tipo+'.jpg'; img.alt=alt; b.appendChild(img);
-        b.addEventListener('click',()=>{ principal.src=img.src; principal.alt=alt; miniaturas.querySelectorAll('.miniatura').forEach(x=>x.classList.remove('selecionada')); b.classList.add('selecionada'); });
-        miniaturas.appendChild(b);
+    galeria.forEach((item, indice) => {
+        const botao = document.createElement('button');
+        botao.type = 'button';
+        botao.className = `miniatura${indice === 0 ? ' selecionada' : ''}`;
+        botao.setAttribute('aria-label', item.descricao);
+
+        const imagem = document.createElement('img');
+        imagem.src = item.caminho;
+        imagem.alt = item.descricao;
+        imagem.onerror = () => botao.remove();
+
+        botao.appendChild(imagem);
+        botao.addEventListener('click', () => {
+            principal.src = item.caminho;
+            principal.alt = item.descricao;
+            miniaturas.querySelectorAll('.miniatura').forEach(el => el.classList.remove('selecionada'));
+            botao.classList.add('selecionada');
+        });
+        miniaturas.appendChild(botao);
     });
-    principal.src=base+'frente.jpg'; principal.alt='Vista frontal do '+slug;
+
+    principal.onerror = () => {
+        principal.onerror = null;
+        principal.src = `/img/produto${produto.id}.png`;
+        principal.onerror = () => {
+            principal.onerror = null;
+            principal.src = '/img/produto1.png';
+        };
+    };
+    principal.src = imagemPrincipal;
+    principal.alt = 'Imagem principal do produto';
 }
-async function carregarProduto(){
-    let produto=catalogoMoletons[slugProduto]||catalogoMoletons.outlaw;
-    if(idProduto){ try { const r=await fetch(`/api/produtos/${encodeURIComponent(idProduto)}`); const d=await r.json(); if(r.ok) produto={...produto,...d}; } catch(e){ console.error(e); } }
-    const titulo=document.querySelector('.informacoes-produto h1'); const preco=document.querySelector('.preco span'); const descricao=document.querySelector('.descricao');
-    if(titulo) titulo.textContent=produto.nome; if(preco) preco.textContent=Number(produto.preco).toLocaleString('pt-BR',{style:'currency',currency:'BRL'}); if(descricao) descricao.textContent=produto.descricao||'';
-    document.title=`DRIPLAB — ${produto.nome}`; configurarGaleria(slugProduto);
-    const form=document.querySelector('#form-produto'); if(form) form.addEventListener('submit',e=>{e.preventDefault(); const tamanho=form.querySelector('input[name="tamanho"]:checked')?.value; if(!tamanho){alert('Selecione um tamanho.');return;} const itens=lerCarrinho(); const chave=produto.id??slugProduto; const existente=itens.find(x=>(x.produto_id??x.slug)===chave&&x.tamanho===tamanho); if(existente) existente.quantidade=Number(existente.quantidade||1)+1; else itens.push({produto_id:produto.id??null,slug:slugProduto,nome:produto.nome,preco:Number(produto.preco),imagem:`../img/moletom-${slugProduto}-frente.jpg`,tamanho,quantidade:1}); localStorage.setItem('carrinho',JSON.stringify(itens)); alert('Produto adicionado ao carrinho!'); });
+
+async function carregarProduto() {
+    const titulo = document.querySelector('.informacoes-produto h1');
+    const preco = document.querySelector('.preco span');
+    const descricao = document.querySelector('.descricao');
+
+    if (!idProduto) {
+        if (titulo) titulo.textContent = 'Produto não encontrado';
+        if (descricao) descricao.textContent = 'Volte à categoria Moletom e selecione um produto.';
+        return;
+    }
+
+    try {
+        const resposta = await fetch(`/api/produtos/${encodeURIComponent(idProduto)}`);
+        const produto = await resposta.json().catch(() => ({}));
+        if (!resposta.ok) throw new Error(produto.mensagem || 'Produto não encontrado.');
+
+        if (titulo) titulo.textContent = produto.nome;
+        if (preco) {
+            preco.textContent = Number(produto.preco).toLocaleString('pt-BR', {
+                style: 'currency', currency: 'BRL'
+            });
+        }
+        if (descricao) descricao.textContent = produto.descricao || '';
+        document.title = `DRIPLAB — ${produto.nome}`;
+        configurarGaleria(produto);
+
+        const formulario = document.querySelector('#form-produto');
+        if (!formulario) return;
+        formulario.addEventListener('submit', event => {
+            event.preventDefault();
+            const tamanho = formulario.querySelector('input[name="tamanho"]:checked')?.value;
+            if (!tamanho) {
+                alert('Selecione um tamanho.');
+                return;
+            }
+
+            const itens = lerCarrinho();
+            const existente = itens.find(item =>
+                Number(item.produto_id) === Number(produto.id) && item.tamanho === tamanho
+            );
+            if (existente) {
+                existente.quantidade = Number(existente.quantidade || 1) + 1;
+            } else {
+                itens.push({
+                    produto_id: produto.id,
+                    slug: String(produto.id),
+                    nome: produto.nome,
+                    preco: Number(produto.preco),
+                    imagem: caminhoImagem(produto.imagens?.frente || produto.imagem, `produto${produto.id}.png`),
+                    tamanho,
+                    quantidade: 1
+                });
+            }
+            localStorage.setItem('carrinho', JSON.stringify(itens));
+            alert('Produto adicionado ao carrinho!');
+        });
+    } catch (erro) {
+        if (titulo) titulo.textContent = 'Produto indisponível';
+        if (descricao) descricao.textContent = erro.message;
+    }
 }
-carregarProduto();
+
+document.addEventListener('DOMContentLoaded', carregarProduto);

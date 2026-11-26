@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DRIPLAB — Administração</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/administrador.css">
+    <script src="../js/administrador.js" defer></script>
+</head>
+<body>
+    <section class="linhatopo">
+        <div class="faixa-avisos">
+            <div class="lista-avisos">
+                <p>Área restrita a administradores!</p>
+                <p>PAINEL DE ADMINISTRAÇÃO DRIPLAB</p>
+            </div>
+        </div>
+    </section>
+
+    <header class="faixasuperior adm-faixasuperior">
+        <div class="logo">
+            <a href="../html/home.html">
+                <img src="../img/LOGO_BRANCA.png" alt="Logo DRIPLAB" class="logo-normal" id="admlogo">
+                <img src="../img/LOGO_VERMELHA.png" alt="" class="logo-hover" id="admlogo">
+            </a>
+        </div>
+
+        <div class="adm-identificacao">
+            <span class="adm-legenda">ÁREA RESTRITA</span>
+            <strong id="nome-admin">Painel administrativo</strong>
+        </div>
+
+        <div class="adm-acoes-topo">
+            <a href="../html/home.html" class="adm-voltar">Voltar à loja</a>
+            <button type="button" id="btn-sair" class="adm-sair">Sair</button>
+        </div>
+    </header>
+
+    <nav class="menu adm-menu">
+        <a href="#cadastro-produto" class="options">Cadastrar produto</a>
+        <a href="#produtos-cadastrados" class="options">Produtos cadastrados</a>
+        <a href="../html/home.html" class="options">Página inicial</a>
+    </nav>
+
+    <main class="adm-conteudo">
+        <section class="adm-apresentacao">
+            <p class="adm-sobretitulo">DRIPLAB / ADMINISTRAÇÃO</p>
+            <h1>Gerenciar produtos</h1>
+            <p>Cadastre novos produtos, atualize informações e controle o que aparece no catálogo da loja.</p>
+        </section>
+
+        <div id="mensagem" class="adm-mensagem" role="status" aria-live="polite"></div>
+
+        <section class="adm-bloco" id="cadastro-produto">
+            <div class="adm-titulo-bloco">
+                <div>
+                    <p class="adm-sobretitulo">CATÁLOGO</p>
+                    <h2 id="titulo-formulario">Adicionar produto</h2>
+                </div>
+                <button type="button" id="btn-limpar" class="adm-botao adm-botao-secundario">Limpar formulário</button>
+            </div>
+
+            <form id="form-produto" class="adm-formulario">
+                <input type="hidden" id="produto-id">
+
+                <div class="adm-grade-form">
+                    <label for="nome">Nome do produto
+                        <input type="text" id="nome" maxlength="160" placeholder="Ex.: Moletom Aftershock" required>
+                    </label>
+
+                    <label for="categoria">Categoria
+                        <select id="categoria" required>
+                            <option value="Moletom">Moletom</option>
+                        </select>
+                    </label>
+
+                    <label for="preco">Preço (R$)
+                        <input type="number" id="preco" min="0.01" step="0.01" placeholder="99,90" required>
+                    </label>
+
+                    <label for="estoque">Estoque
+                        <input type="number" id="estoque" min="0" step="1" value="0" required>
+                    </label>
+
+                    <label for="tamanho">Tamanho
+                        <select id="tamanho">
+                            <option value="">Não se aplica</option>
+                            <option value="P">P</option>
+                            <option value="M">M</option>
+                            <option value="G">G</option>
+                            <option value="GG">GG</option>
+                            <option value="XG">XG</option>
+                        </select>
+                    </label>
+
+                    <label for="cor">Cor
+                        <input type="text" id="cor" maxlength="60" placeholder="Ex.: Preto e vermelho">
+                    </label>
+
+                    <label for="imagem" class="adm-campo-largo">Imagem principal / frente
+                        <input type="text" id="imagem" maxlength="500" placeholder="../img/produto1-frente.jpg">
+                    </label>
+
+                    <label for="imagem-lateral">Imagem lateral
+                        <input type="text" id="imagem-lateral" maxlength="500" placeholder="../img/produto1-lateral.jpg">
+                    </label>
+
+                    <label for="imagem-costas">Imagem das costas
+                        <input type="text" id="imagem-costas" maxlength="500" placeholder="../img/produto1-costas.jpg">
+                    </label>
+
+                    <label for="imagem-detalhe" class="adm-campo-largo">Imagem de detalhe
+                        <input type="text" id="imagem-detalhe" maxlength="500" placeholder="../img/produto1-detalhe.jpg">
+                        <small>Informe os caminhos das imagens existentes na pasta img. Use nomes como produto1-frente.jpg, produto1-lateral.jpg, produto1-costas.jpg e produto1-detalhe.jpg.</small>
+                    </label>
+
+                    <label for="descricao" class="adm-campo-largo">Descrição
+                        <textarea id="descricao" rows="4" placeholder="Descreva o produto..."></textarea>
+                    </label>
+                </div>
+
+                <label id="linha-ativo" class="adm-ativo" hidden>
+                    <input type="checkbox" id="ativo" checked>
+                    Produto ativo e visível na loja
+                </label>
+
+                <div class="adm-acoes-form">
+                    <button type="submit" id="btn-salvar" class="adm-botao adm-botao-principal">Cadastrar produto</button>
+                    <button type="button" id="btn-cancelar-edicao" class="adm-botao adm-botao-secundario" hidden>Cancelar edição</button>
+                </div>
+            </form>
+        </section>
+
+        <section class="adm-bloco" id="produtos-cadastrados">
+            <div class="adm-titulo-bloco adm-titulo-lista">
+                <div>
+                    <p class="adm-sobretitulo">ESTOQUE / PRODUTOS</p>
+                    <h2>Produtos cadastrados</h2>
+                </div>
+                <button type="button" id="btn-atualizar" class="adm-botao adm-botao-secundario">Atualizar lista</button>
+            </div>
+
+            <div class="adm-filtro">
+                <label for="filtro-nome">Buscar produto</label>
+                <input type="search" id="filtro-nome" placeholder="Digite o nome do produto...">
+            </div>
+
+            <div class="adm-tabela-scroll">
+                <table class="adm-tabela">
+                    <thead>
+                        <tr>
+                            <th>Produto</th>
+                            <th>Categoria</th>
+                            <th>Preço</th>
+                            <th>Estoque</th>
+                            <th>Status</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabela-produtos">
+                        <tr><td colspan="6" class="adm-vazio">Carregando produtos...</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <footer class="rodape adm-rodape">
+        <div class="marca-sac">
+            <div class="descmarca">
+                <h3>DripLab</h3>
+                <p class="textomarca">
+                    A DripLab é uma marca de streetwear digital-first que não quer ser apenas uma loja – quer ser uma experiência completa. A marca opera com o conceito de drops limitados e coleções exclusivas, misturando moda com cultura digital e elementos de game.
+                </p>
+            </div>
+        </div>
+
+        <div class="institucional">
+            <h3>Institucional</h3>
+            <div class="textoinst">
+                <a href="../html/sobre.html">Sobre nós</a>
+                <a href="../html/home.html">Página inicial</a>
+                <a href="#cadastro-produto">Gerenciar catálogo</a>
+            </div>
+        </div>
+
+        <div class="pagamentos">
+            <h3>Formas de Pagamento</h3>
+            <div class="formaspag">
+                <img src="../img/mastercard.png" alt="Mastercard">
+                <img src="../img/visa.png" alt="Visa">
+                <img src="../img/diners.png" alt="Diners Club">
+                <img src="../img/hipercard.png" alt="Hipercard">
+                <img src="../img/elo.png" alt="Elo">
+                <img src="../img/discover.png" alt="Discover">
+                <img src="../img/amex.png" alt="American Express">
+                <img src="../img/pix.png" alt="Pix">
+                <img src="../img/cartao.png" alt="Cartão">
+            </div>
+            <div class="contatos">
+                <h3>Sac</h3>
+                <div class="dadoscontato">
+                    <img src="../img/telefone.png" alt="Ícone de telefone">
+                    <div class="numeros">
+                        <p>21 96763 2288</p>
+                        <p>21 97962 0717</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

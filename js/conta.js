@@ -4,11 +4,11 @@ const statusConta = document.getElementById('conta-status');
 function sair() {
     localStorage.removeItem('token');
     localStorage.removeItem('usuario');
-    location.href = 'login.html';
+    location.href = 'index.html';
 }
 
 if (!token) {
-    location.href = 'login.html';
+    location.href = 'index.html';
 } else {
     fetch('/api/usuarios/me', {
         headers: {
@@ -26,6 +26,19 @@ if (!token) {
             document.getElementById('conta-username').textContent = d.username || '—';
             document.getElementById('conta-email').textContent = d.email || '—';
             document.getElementById('conta-telefone').textContent = d.telefone || '—';
+
+            const acessoAdm = document.getElementById('conta-acesso-adm');
+            acessoAdm.hidden = d.tipo !== 'administrador';
+
+            localStorage.setItem('usuario', JSON.stringify({
+                id: d.id,
+                nome: d.nome,
+                username: d.username,
+                email: d.email,
+                telefone: d.telefone,
+                tipo: d.tipo
+            }));
+
             statusConta.textContent = 'Informações da sua conta DRIPLAB';
         })
         .catch((e) => {
