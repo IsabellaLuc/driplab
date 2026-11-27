@@ -44,7 +44,7 @@
 
             <div class="submenu">
                 <a href="../html/moletom.html" class="util"><p>Moletom</p></a>
-                <a href="#" class="naoutil"><p>Camisetas</p></a>
+                <a href="../html/camisa.html" class="util"><p>Camisetas</p></a>
             </div>
  
         </div>
@@ -127,11 +127,13 @@
 
                     <div class="sacola-pg-aplicacao">
 
-                        <input type="text" placeholder="Ex: LPCG7HH">
+                        <input type="text" placeholder="Ex: LPCG7HH" id="campo-cupom">
 
-                        <button type="button">Aplicar</button>
+                        <button type="button" id="btn-cupom">Aplicar</button>
 
                     </div>
+
+                    <p class="mensagem-cupom" id="mensagem-cupom"></p>
 
                 </section>
 
@@ -146,9 +148,24 @@
 
                     </div>
 
+                    <!-- Dados para finalizar a compra -->
+                    <div class="checkout-campos">
+                        <label for="endereco-entrega">Endereço de entrega</label>
+                        <input type="text" id="endereco-entrega" placeholder="Rua, número, bairro, cidade e CEP">
+
+                        <label for="forma-pagamento">Forma de pagamento</label>
+                        <select id="forma-pagamento">
+                            <option value="pix">Pix</option>
+                            <option value="cartao">Cartão</option>
+                            <option value="boleto">Boleto</option>
+                        </select>
+                    </div>
+
                     <button type="button" class="logbut btn-finalizar">
                         Finalizar compra
                     </button>
+
+                    <p class="mensagem-checkout" id="mensagem-checkout"></p>
 
                 </section>
 
