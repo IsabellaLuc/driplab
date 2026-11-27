@@ -40,7 +40,8 @@ async function listarAdministracao(req, res) {
     if (req.query.categoria) {
         where.categoria = String(req.query.categoria).trim();
     }
-
+    
+    const limit = Number.parseInt(req.query.limit, 10) || 100;
     const resultado = await Produto.findAndCountAll({
         where,
         limit,

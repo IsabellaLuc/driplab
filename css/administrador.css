@@ -614,3 +614,9 @@
     .rodape .contatos h3 {
         margin-bottom: 10px;
     }
+    footer {
+        margin-top: auto;
+    }
+    label {
+        margin-bottom: 10px;
+    }
