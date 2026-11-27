@@ -54,6 +54,58 @@ const produtosIniciais = [
             detalhe: `${base}produto4-detalhe.jpg`
         },
         categoria: 'Moletom'
+        },
+
+    // ---------- CAMISETAS ----------
+    {
+        nome: 'Camiseta Thorn',
+        descricao: 'Camiseta preta de manga longa com arte de espinhos prateados e detalhes em vermelho.',
+        preco: 69.90,
+        imagem: `${base}produto8.png`,
+        imagens: { frente: `${base}produto8.png` },
+        categoria: 'Camiseta'
+    },
+    {
+        nome: 'Camiseta Star Patch',
+        descricao: 'Camiseta vermelha com estrela grande, recortes xadrez e acabamento desfiado.',
+        preco: 64.90,
+        imagem: `${base}produto10.png`,
+        imagens: { frente: `${base}produto10.png` },
+        categoria: 'Camiseta'
+    },
+    {
+        nome: 'Camiseta Velocity',
+        descricao: 'Camiseta preta de manga longa com recortes vermelhos e logo DRIPLAB no peito.',
+        preco: 72.90,
+        imagem: `${base}produto11.png`,
+        imagens: { frente: `${base}produto11.png` },
+        categoria: 'Camiseta'
+    },
+    {
+        nome: 'Camiseta Ruins',
+        descricao: 'Camiseta verde-musgo com efeito destroyed e estrela vermelha bordada.',
+        preco: 59.90,
+        imagem: `${base}produto6.png`,
+        imagens: { frente: `${base}produto6.png` },
+        categoria: 'Camiseta'
+    },
+
+    // ---------- TÊNIS ----------
+    {
+        nome: 'Tênis Drift',
+        descricao: 'Tênis cano baixo vermelho, preto e off-white com solado robusto.',
+        preco: 189.90,
+        imagem: `${base}produto2.png`,
+        imagens: { frente: `${base}produto2.png` },
+        categoria: 'Tenis'
+    },
+    {
+        nome: 'Coturno Riot',
+        descricao: 'Coturno preto com solado tratorado alto e cadarço reforçado.',
+        preco: 219.90,
+        imagem: `${base}produto4.png`,
+        imagens: { frente: `${base}produto4.png` },
+        categoria: 'Tenis'
     }
 ].map(produto => ({
     ...produto,
@@ -66,15 +118,19 @@ async function inserirProdutosIniciais() {
         await sequelize.authenticate();
         await sequelize.sync();
 
-        const quantidade = await Produto.count();
+        // Só cadastra os produtos que ainda não existem (pelo nome),
+        // assim dá para rodar o comando de novo sem duplicar nada.
+        let inseridos = 0;
 
-        if (quantidade > 0) {
-            console.log(`A tabela Produto já possui ${quantidade} registro(s). Nenhum produto foi inserido para evitar duplicações.`);
-            return;
+        for (const produto of produtosIniciais) {
+            const existe = await Produto.findOne({ where: { nome: produto.nome } });
+            if (!existe) {
+                await Produto.create(produto);
+                inseridos++;
+            }
         }
 
-        await Produto.bulkCreate(produtosIniciais);
-        console.log(`${produtosIniciais.length} produtos iniciais foram cadastrados.`);
+        console.log(`${inseridos} produto(s) novo(s) cadastrado(s).`);
     } catch (erro) {
         console.error('Não foi possível cadastrar os produtos iniciais:', erro);
         process.exitCode = 1;
