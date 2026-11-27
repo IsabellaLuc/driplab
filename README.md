@@ -64,3 +64,24 @@ Os documentos de modelagem estão disponíveis na pasta *diagramas*, incluindo:
 - Modelagem conceitual.
 - Modelagem lógica.
 - Diagrama Entidade-Relacionamento (DER).
+
+
+
+## 7. Como rodar o projeto
+
+1. No MySQL Workbench, rode na ordem: `sql/driplab_mysql.sql`, `sql/produto_moletom.sql` e `sql/produtos_camisetas_tenis.sql`.
+2. Crie o arquivo `backend/.env` com:
+   ```
+   DB_NAME=driplab_db
+   DB_USER=root
+   DB_PASSWORD=sua_senha_do_mysql
+   DB_HOST=localhost
+   DB_PORT=3306
+   JWT_SECRET=uma_frase_secreta_com_pelo_menos_24_letras
+   ```
+3. No terminal, entre na pasta `backend` e rode, nesta ordem:
+   - `npm install`
+   - `npm run seed:produtos` (cadastra moletons, camisetas e tênis sem duplicar)
+   - `npm start`
+4. Abra no navegador: http://localhost:3000/html/home.html
+
