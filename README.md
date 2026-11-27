@@ -50,7 +50,7 @@ Para o desenvolvimento do DRIPLAB, foram utilizadas as seguintes tecnologias:
 
 O site poderá ser acessado pelo seguinte endereço:
 
-**Link:** [INSERIR LINK DO SITE PUBLICADO]
+**Link:** https://driplab-isabella.onrender.com/html/home.html
 
 
 
