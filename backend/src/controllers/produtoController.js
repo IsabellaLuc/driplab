@@ -2,6 +2,9 @@ const { Op } = require('sequelize');
 const { Produto } = require('../models');
 const { paginaLimite, numeroPositivo } = require('../utils/validacoes');
 
+// Categorias da loja (iguais às páginas moletom.html, camisa.html e tenis.html)
+const CATEGORIAS = ['Moletom', 'Camiseta', 'Tenis'];
+
 async function listar(req, res) {
     const limit = Math.min(Number(req.query.limit) || 100, 100);
     const { pagina, limite, offset } = paginaLimite(req.query);
@@ -75,7 +78,7 @@ async function cadastrar(req, res) {
 
     if (
         !String(nome || '').trim() ||
-        categoria !== 'Moletom' ||
+        !CATEGORIAS.includes(categoria) ||
         !numeroPositivo(preco) ||
         !Number.isInteger(estoqueNumero) ||
         estoqueNumero < 0
@@ -91,7 +94,7 @@ async function cadastrar(req, res) {
         preco,
         imagem,
         imagens: imagens && typeof imagens === 'object' ? imagens : null,
-        categoria: 'Moletom',
+        categoria,
         tamanho: tamanho || null,
         cor,
         estoque: estoqueNumero
@@ -111,10 +114,12 @@ async function atualizar(req, res) {
         if (req.body[campo] !== undefined) produto[campo] = req.body[campo];
     }
 
-    if (req.body.categoria !== undefined && req.body.categoria !== 'Moletom') {
-        return res.status(400).json({ mensagem: 'A única categoria disponível no momento é Moletom.' });
+    if (req.body.categoria !== undefined) {
+        if (!CATEGORIAS.includes(req.body.categoria)) {
+            return res.status(400).json({ mensagem: 'Categoria inválida. Use Moletom, Camiseta ou Tenis.' });
+        }
+        produto.categoria = req.body.categoria;
     }
-    produto.categoria = 'Moletom';
 
     if (!numeroPositivo(produto.preco) || !Number.isInteger(Number(produto.estoque)) || Number(produto.estoque) < 0) {
         return res.status(400).json({
