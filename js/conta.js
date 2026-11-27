@@ -74,3 +74,67 @@ document.getElementById('conta-excluir')?.addEventListener('click', async () => 
         alert(e.message);
     }
 });
+
+
+// Botão "sair" do cabeçalho (nesta página o auth.js não é carregado)
+document.getElementById('btn-sair')?.addEventListener('click', sair);
+
+// Nesta página a pessoa sempre está logada: esconde o "Cadastre-se" do topo
+const caixaDeslogado = document.getElementById('usuario-deslogado');
+if (caixaDeslogado) caixaDeslogado.style.display = 'none';
+
+
+/* MEUS PEDIDOS (GET /api/pedidos/meus) */
+
+async function carregarMeusPedidos() {
+    const lista = document.getElementById('conta-lista-pedidos');
+    if (!lista || !token) return;
+
+    try {
+        const resposta = await fetch('/api/pedidos/meus', {
+            headers: { Authorization: `Bearer ${token}` }
+        });
+        const pedidos = await resposta.json();
+
+        if (!resposta.ok) {
+            throw new Error(pedidos.mensagem || 'Não foi possível carregar os pedidos.');
+        }
+
+        lista.replaceChildren();
+
+        if (!pedidos.length) {
+            const vazio = document.createElement('p');
+            vazio.textContent = 'Você ainda não fez nenhum pedido.';
+            lista.appendChild(vazio);
+            return;
+        }
+
+        pedidos.forEach(pedido => {
+            const caixa = document.createElement('div');
+            caixa.className = 'conta-pedido';
+
+            const status = document.createElement('span');
+            status.className = 'status-pedido';
+            status.textContent = pedido.status;
+
+            const titulo = document.createElement('strong');
+            titulo.textContent = `Pedido nº ${pedido.id}`;
+
+            const data = new Date(pedido.createdAt || pedido.created_at).toLocaleDateString('pt-BR');
+            const total = Number(pedido.total).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+            const itens = (pedido.ItemPedidos || [])
+                .map(item => `${item.quantidade}x ${item.Produto ? item.Produto.nome : 'Produto'}`)
+                .join(', ');
+
+            const detalhes = document.createElement('p');
+            detalhes.textContent = `${data} · ${total} · ${itens}`;
+
+            caixa.append(status, titulo, detalhes);
+            lista.appendChild(caixa);
+        });
+    } catch (erro) {
+        lista.textContent = erro.message;
+    }
+}
+
+carregarMeusPedidos();

@@ -1,15 +1,20 @@
+// Esta função serve para as 3 páginas de categoria (moletom, camisa e tênis).
+// A categoria vem do atributo data-categoria da <section> no HTML.
 async function carregarMoletons() {
     const lista = document.querySelector('#lista-moletons');
     if (!lista) return;
 
+    const categoria = lista.dataset.categoria || 'Moletom';
+    const nomeCategoria = lista.dataset.nome || 'produtos';
+
     lista.replaceChildren();
     const carregando = document.createElement('p');
     carregando.className = 'mensagem-produtos';
-    carregando.textContent = 'Carregando moletons...';
+    carregando.textContent = `Carregando ${nomeCategoria}...`;
     lista.appendChild(carregando);
 
     try {
-        const resposta = await fetch('/api/produtos?categoria=Moletom&limite=100');
+        const resposta = await fetch(`/api/produtos?categoria=${encodeURIComponent(categoria)}&limite=100`);
         const dados = await resposta.json().catch(() => ({}));
 
         if (!resposta.ok) {
@@ -22,7 +27,7 @@ async function carregarMoletons() {
         if (!produtos.length) {
             const vazio = document.createElement('p');
             vazio.className = 'mensagem-produtos';
-            vazio.textContent = 'Nenhum moletom cadastrado no momento.';
+            vazio.textContent = `Nenhum produto em ${nomeCategoria} no momento.`;
             lista.appendChild(vazio);
             return;
         }
@@ -54,45 +59,19 @@ async function carregarMoletons() {
             const botao = document.createElement('button');
             botao.type = 'button';
             botao.className = 'carrinho';
-            botao.setAttribute('aria-label', `Adicionar ${produto.nome} ao carrinho`);
+            botao.setAttribute('aria-label', `Escolher tamanho de ${produto.nome}`);
 
             const icone = document.createElement('img');
             icone.src = '../img/carrinho.png';
             icone.alt = '';
             botao.appendChild(icone);
 
+            // O tamanho é obrigatório: o botão leva para a página do produto,
+            // onde a pessoa escolhe o tamanho e adiciona ao carrinho.
             botao.addEventListener('click', event => {
                 event.preventDefault();
                 event.stopPropagation();
-
-                let itens = [];
-                try {
-                    const salvos = JSON.parse(localStorage.getItem('carrinho') || '[]');
-                    itens = Array.isArray(salvos) ? salvos : [];
-                } catch {
-                    itens = [];
-                }
-
-                const existente = itens.find(item =>
-                    Number(item.produto_id) === Number(produto.id) && !item.tamanho
-                );
-
-                if (existente) {
-                    existente.quantidade = Number(existente.quantidade || 1) + 1;
-                } else {
-                    itens.push({
-                        produto_id: produto.id,
-                        slug: String(produto.id),
-                        nome: produto.nome,
-                        preco: Number(produto.preco),
-                        imagem: imagem.src,
-                        tamanho: null,
-                        quantidade: 1
-                    });
-                }
-
-                localStorage.setItem('carrinho', JSON.stringify(itens));
-                alert('Produto adicionado ao carrinho!');
+                window.location.href = link.href;
             });
 
             caixaImagem.append(link, botao);
@@ -127,7 +106,7 @@ async function carregarMoletons() {
         lista.replaceChildren();
         const mensagem = document.createElement('p');
         mensagem.className = 'mensagem-produtos';
-        mensagem.textContent = 'Não foi possível carregar os moletons. Verifique se o servidor está ligado.';
+        mensagem.textContent = `Não foi possível carregar ${nomeCategoria}. Verifique se o servidor está ligado.`;
         lista.appendChild(mensagem);
         console.error(erro);
     }

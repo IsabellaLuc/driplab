@@ -29,17 +29,21 @@ function configurarGaleria(produto) {
     const imagens = produto.imagens && typeof produto.imagens === 'object'
         ? produto.imagens
         : {};
-    const idNumerico = Number(produto.id);
     const imagemPrincipal = caminhoImagem(
         imagens.frente || produto.imagem,
         `produto${produto.id}.png`
     );
     const galeria = [{ caminho: imagemPrincipal, descricao: 'Imagem principal do produto' }];
 
-    if (Number.isInteger(idNumerico) && idNumerico >= 1 && idNumerico <= 4) {
+    // Os moletons têm fotos extras com o mesmo número da foto principal
+    // (ex.: produto1-frente.jpg -> produto1-detalhe-1.jpg).
+    // O número vem do nome da foto, e não do id do banco.
+    const numeroFoto = (imagemPrincipal.match(/produto(\d+)-frente\.jpg$/) || [])[1];
+
+    if (numeroFoto) {
         for (let indice = 1; indice <= 3; indice++) {
             galeria.push({
-                caminho: `/img/produto${idNumerico}-detalhe-${indice}.jpg`,
+                caminho: `/img/produto${numeroFoto}-detalhe-${indice}.jpg`,
                 descricao: `Detalhe ${indice} do produto`
             });
         }
@@ -96,7 +100,7 @@ async function carregarProduto() {
 
     if (!idProduto) {
         if (titulo) titulo.textContent = 'Produto não encontrado';
-        if (descricao) descricao.textContent = 'Volte à categoria Moletom e selecione um produto.';
+        if (descricao) descricao.textContent = 'Volte à loja e selecione um produto.';
         return;
     }
 
@@ -143,7 +147,10 @@ async function carregarProduto() {
                 });
             }
             localStorage.setItem('carrinho', JSON.stringify(itens));
-            alert('Produto adicionado ao carrinho!');
+
+            if (confirm(`${produto.nome} (tamanho ${tamanho}) foi adicionado ao carrinho!\n\nDeseja ir para o carrinho agora?`)) {
+                window.location.href = '../html/carrinho.html';
+            }
         });
     } catch (erro) {
         if (titulo) titulo.textContent = 'Produto indisponível';

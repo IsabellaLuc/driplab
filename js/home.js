@@ -1,3 +1,8 @@
+// Deixa o texto minúsculo e sem acento (ex.: "Tênis" -> "tenis") para a pesquisa
+function semAcento(texto) {
+    return String(texto).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+}
+
 async function carregarProdutos() {
     const carrossel = document.querySelector('.carrossel');
     if (!carrossel) return;
@@ -17,14 +22,32 @@ async function carregarProdutos() {
         }
 
         const dados = await resposta.json();
-        const produtos = Array.isArray(dados.produtos) ? dados.produtos : [];
+        let produtos = Array.isArray(dados.produtos) ? dados.produtos : [];
+
+        // PESQUISA: home.html?busca=texto mostra só os produtos encontrados
+        const busca = new URLSearchParams(location.search).get('busca');
+
+        if (busca) {
+            const termo = semAcento(busca);
+            produtos = produtos.filter(produto =>
+                semAcento(`${produto.nome} ${produto.categoria} ${produto.descricao || ''}`).includes(termo)
+            );
+
+            const titulo = document.querySelector('#maisvendidos .subtit');
+            if (titulo) titulo.textContent = `Resultados para "${busca}"`;
+
+            const campo = document.querySelector('#campo-pesquisa');
+            if (campo) campo.value = busca;
+        }
 
         carrossel.replaceChildren();
 
         if (produtos.length === 0) {
             const mensagem = document.createElement('p');
             mensagem.className = 'mensagem-produtos';
-            mensagem.textContent = 'Nenhum produto cadastrado no momento.';
+            mensagem.textContent = busca
+                ? `Nenhum produto encontrado para "${busca}".`
+                : 'Nenhum produto cadastrado no momento.';
             carrossel.appendChild(mensagem);
             return;
         }

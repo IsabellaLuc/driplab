@@ -22,7 +22,9 @@ if (formulario) {
 
             localStorage.setItem('token', dados.token);
             localStorage.setItem('usuario', JSON.stringify(dados.usuario));
-            window.location.href = 'home.html';
+            // Volta para a página de onde a pessoa veio (ex.: carrinho)
+            const voltar = new URLSearchParams(location.search).get('voltar');
+            window.location.href = /^[a-z]+\.html$/.test(voltar || '') ? voltar : 'home.html';
         } catch (erro) {
             alert(erro.message === 'Failed to fetch'
                 ? 'Não foi possível conectar ao servidor.'
@@ -30,3 +32,10 @@ if (formulario) {
         }
     });
 }
+
+// "Esqueci minha senha": ainda não existe recuperação automática,
+// então mostra como falar com o atendimento.
+document.querySelector('#esqueci-senha')?.addEventListener('click', (event) => {
+    event.preventDefault();
+    alert('Para recuperar sua senha, fale com o nosso SAC:\n21 96763 2288 ou 21 97962 0717.');
+});

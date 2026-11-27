@@ -1,4 +1,3 @@
-
 (() => {
     const formulario = document.querySelector('#form-pesquisa');
     const campoPesquisa = document.querySelector('#campo-pesquisa');
@@ -10,22 +9,14 @@
     formulario.addEventListener('submit', function(evento) {
         evento.preventDefault();
 
-        const pesquisa = campoPesquisa.value.trim().toLowerCase();
+        const pesquisa = campoPesquisa.value.trim();
 
         if (pesquisa === '') {
             return;
         }
 
-        const produtos = document.querySelectorAll('.prod, .produto');
-
-        produtos.forEach(function(produto) {
-            const nome = produto.textContent.toLowerCase();
-
-            if (nome.includes(pesquisa)) {
-                produto.style.display = '';
-            } else {
-                produto.style.display = 'none';
-            }
-        });
+        // A pesquisa procura em TODOS os produtos da loja:
+        // vai para a home, que mostra o resultado em "Mais vendidos".
+        window.location.href = `../html/home.html?busca=${encodeURIComponent(pesquisa)}#maisvendidos`;
     });
 })();

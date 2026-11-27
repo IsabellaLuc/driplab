@@ -218,7 +218,7 @@
         event.preventDefault();
 
         const dados = obterDadosFormulario();
-        if (!dados.nome || dados.categoria !== 'Moletom' || !Number.isFinite(dados.preco) ||
+        if (!dados.nome || !['Moletom', 'Camiseta', 'Tenis'].includes(dados.categoria) || !Number.isFinite(dados.preco) ||
             dados.preco <= 0 || !Number.isInteger(dados.estoque) || dados.estoque < 0) {
             mostrarMensagem('Confira nome, categoria, preço e estoque.', 'erro');
             return;
