@@ -3,6 +3,7 @@ const { Produto } = require('../models');
 const { paginaLimite, numeroPositivo } = require('../utils/validacoes');
 
 async function listar(req, res) {
+    const limit = Math.min(Number(req.query.limit) || 100, 100);
     const { pagina, limite, offset } = paginaLimite(req.query);
     const where = { ativo: true };
 

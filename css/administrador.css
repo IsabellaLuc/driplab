@@ -546,3 +546,71 @@
         flex-direction: column;
     }
 }
+@media (max-width: 480px) {
+    .adm-identificacao {
+        top: 85px;
+    }
+
+    .adm-identificacao strong {
+        font-size: 16px;
+    }
+
+    .adm-apresentacao h1 {
+        font-size: clamp(24px, 5vw, 30px);
+    }
+    .logo {
+        margin:auto;
+    }
+}
+
+ .rodape {
+        grid-template-columns: repeat(4, max-content);
+        grid-template-rows: auto 1fr;
+        justify-content: space-between; /* mesmo espaço entre os 4 blocos */
+        row-gap: 0;
+        column-gap: 20px;               /* espaço mínimo entre os blocos */
+        padding-left: 7.5%;             /* laterais iguais */
+        padding-right: 7.5%;
+    }
+
+    /* libera "Formas de Pagamento" e "Sac" para a grade principal */
+    .rodape .pagamentos {
+        display: contents;
+    }
+
+    .rodape .marca-sac {
+        grid-column: 1;
+        grid-row: 1 / 3;
+    }
+
+    .rodape .institucional {
+        grid-column: 2;
+        grid-row: 1 / 3;
+    }
+
+    .rodape .pagamentos > h3 {
+        grid-column: 3;
+        grid-row: 1;
+    }
+
+    .rodape .formaspag {
+        grid-column: 3;
+        grid-row: 2;
+        max-width: 161px; /* largura exata de 7 ícones, sem sobra à direita */
+    }
+
+    .rodape .pagamentos > h3 {
+        max-width: 161px;
+    }
+
+    .rodape .contatos {
+        grid-column: 4;
+        grid-row: 1 / 3;
+    }
+
+    /* mesma distância abaixo de todos os títulos */
+    .rodape h3,
+    .rodape .pagamentos h3,
+    .rodape .contatos h3 {
+        margin-bottom: 10px;
+    }
