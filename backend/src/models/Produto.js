@@ -23,7 +23,7 @@ const Produto = sequelize.define('Produto', {
         allowNull: true
     },
     categoria: {
-        type: DataTypes.ENUM('Moletom'),
+        type: DataTypes.ENUM('Moletom', 'Camiseta', 'Tenis'),
         allowNull: false,
         defaultValue: 'Moletom'
     },
